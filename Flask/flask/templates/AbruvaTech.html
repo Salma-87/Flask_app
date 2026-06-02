@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AbruvaTech — Data Science & AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0A0F1E;
+      --ink-mid: #2C3352;
+      --ink-soft: #5A6282;
+      --paper: #F4F3EE;
+      --surface: #ECEAE2;
+      --accent: #1A56FF;
+      --accent-lt: #D6E1FF;
+      --accent-glow: #E8EEFF;
+      --teal: #0D8A6F;
+      --teal-lt: #C8EDE6;
+      --coral: #D84B30;
+      --coral-lt: #FAE8E4;
+      --white: #FFFFFF;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 68px;
+      background: rgba(244, 243, 238, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(10,15,30,0.07);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    nav ul {
+      list-style: none;
+      display: flex; gap: 2rem;
+    }
+    nav ul a {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: var(--ink);
+      color: var(--paper) !important;
+      padding: 9px 22px;
+      border-radius: 100px;
+      font-weight: 500 !important;
+      font-size: 0.88rem !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+    .nav-cta:hover { background: var(--accent) !important; color: #fff !important; transform: scale(1.03); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 110px 5vw 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(10,15,30,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10,15,30,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent-lt);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+      width: fit-content;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      max-width: 14ch;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      font-weight: 300;
+      color: var(--ink-soft);
+      max-width: 48ch;
+      line-height: 1.75;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      margin-top: 2.5rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ink); color: var(--paper);
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--ink);
+      padding: 14px 28px;
+      border-radius: 100px;
+      border: 1.5px solid rgba(10,15,30,0.2);
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex; gap: 3rem; flex-wrap: wrap;
+      margin-top: 4rem;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .stat-item { }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 0.83rem;
+      color: var(--ink-soft);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    /* floating accent card */
+    .hero-card {
+      position: absolute;
+      right: 8vw; top: 50%;
+      transform: translateY(-50%);
+      width: clamp(280px, 28vw, 380px);
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 8px 60px rgba(10,15,30,0.10), 0 1px 0 rgba(255,255,255,0.8) inset;
+      animation: floatCard 0.8s 0.5s ease both;
+    }
+
+    @media (max-width: 900px) { .hero-card { display: none; } }
+
+    .hero-card-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+
+    .model-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(10,15,30,0.06);
+    }
+    .model-row:last-child { border-bottom: none; }
+
+    .model-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-blue { background: var(--accent); }
+    .dot-teal { background: var(--teal); }
+    .dot-coral { background: var(--coral); }
+
+    .model-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); flex: 1; }
+    .model-bar-wrap { width: 100px; height: 5px; background: var(--surface); border-radius: 100px; }
+    .model-bar { height: 100%; border-radius: 100px; }
+    .bar-blue { background: var(--accent); width: 91%; }
+    .bar-teal { background: var(--teal); width: 76%; }
+    .bar-coral { background: var(--coral); width: 83%; }
+    .model-val { font-size: 0.78rem; color: var(--ink-soft); width: 34px; text-align: right; }
+
+    .hero-card-footer {
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      display: flex; justify-content: space-between;
+    }
+    .pulse-dot {
+      display: inline-block;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 1.8s ease-in-out infinite;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 90px 5vw; }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .section-sub {
+      margin-top: 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--ink-soft);
+      max-width: 52ch;
+    }
+
+    /* ─── SERVICES ─── */
+    .services { background: var(--white); }
+
+    .services-header { margin-bottom: 3.5rem; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5px;
+      background: rgba(10,15,30,0.07);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 2.2rem;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card:hover { background: var(--accent-glow); }
+    .service-card:hover .service-icon { background: var(--accent); color: #fff; }
+
+    .service-icon {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.2rem;
+      font-size: 1.3rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .service-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* ─── PROCESS ─── */
+    .process { background: var(--paper); }
+
+    .process-header { margin-bottom: 3.5rem; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      position: relative;
+    }
+
+    .step {
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: rgba(10,15,30,0.07);
+      letter-spacing: -0.04em;
+      margin-bottom: 0.8rem;
+      transition: color 0.2s;
+    }
+    .step:hover .step-num { color: var(--accent-lt); }
+
+    .step h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .step p {
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ─── ABOUT STRIP ─── */
+    .about-strip {
+      background: var(--ink);
+      color: var(--paper);
+      display: flex; align-items: center; gap: 5vw; flex-wrap: wrap;
+    }
+
+    .about-strip .label { color: rgba(244,243,238,0.45); }
+    .about-strip h2 { color: var(--paper); }
+    .about-strip .section-sub { color: rgba(244,243,238,0.6); }
+
+    .about-content { flex: 1; min-width: 280px; }
+
+    .about-tags {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .tag {
+      background: rgba(244,243,238,0.08);
+      border: 1px solid rgba(244,243,238,0.12);
+      color: rgba(244,243,238,0.75);
+      font-size: 0.82rem;
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    .about-feature-list { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 1rem; }
+
+    .feat-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 1.2rem;
+      background: rgba(244,243,238,0.04);
+      border: 1px solid rgba(244,243,238,0.08);
+      border-radius: var(--radius-sm);
+      transition: background 0.2s;
+    }
+    .feat-row:hover { background: rgba(26,86,255,0.12); border-color: rgba(26,86,255,0.2); }
+
+    .feat-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feat-row h4 {
+      font-size: 0.9rem; font-weight: 500; color: var(--paper); margin-bottom: 2px;
+    }
+    .feat-row p {
+      font-size: 0.83rem; color: rgba(244,243,238,0.5); font-weight: 300;
+    }
+
+    /* ─── TECH ─── */
+    .tech { background: var(--surface); text-align: center; }
+
+    .tech h2 { margin-bottom: 0.5rem; }
+    .tech-desc { color: var(--ink-soft); font-size: 0.95rem; font-weight: 300; margin-bottom: 3rem; }
+
+    .tech-grid {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+    }
+
+    .tech-pill {
+      background: var(--white);
+      border: 1px solid rgba(10,15,30,0.1);
+      border-radius: 100px;
+      padding: 9px 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-mid);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .tech-pill:hover { background: var(--accent-glow); border-color: var(--accent-lt); color: var(--accent); transform: translateY(-2px); }
+
+    /* ─── CONTACT ─── */
+    .contact { background: var(--white); }
+
+    .contact-wrap {
+      display: flex; gap: 5vw; flex-wrap: wrap; align-items: flex-start;
+    }
+
+    .contact-info { flex: 1; min-width: 240px; }
+    .contact-info h2 { margin-bottom: 0.75rem; }
+    .contact-info p { color: var(--ink-soft); font-weight: 300; max-width: 40ch; line-height: 1.75; }
+
+    .contact-details { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.9rem; color: var(--ink-mid);
+    }
+    .contact-item strong { font-weight: 500; }
+
+    .contact-form { flex: 1.2; min-width: 280px; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--ink-mid); margin-bottom: 6px; }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+      background: var(--white);
+    }
+    .form-group textarea { min-height: 110px; resize: vertical; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-submit {
+      width: 100%;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      border-radius: 100px;
+      padding: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .form-submit:hover { background: var(--accent); transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: rgba(244,243,238,0.45);
+      padding: 2.5rem 5vw;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+      font-size: 0.82rem;
+    }
+    footer .logo { color: rgba(244,243,238,0.8); }
+    footer .logo span { color: var(--accent); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes floatCard {
+      from { opacity: 0; transform: translateY(-40%); }
+      to   { opacity: 1; transform: translateY(-50%); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(1.4); }
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Abruva<span>Tech</span></a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#tech">Stack</a></li>
+    <li><a href="#contact" class="nav-cta">Contact us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-eyebrow">⚡ Data Science &amp; AI Solutions</div>
+  <h1>Turn raw data into <em>intelligent</em> decisions</h1>
+  <p class="hero-sub">AbruvaTech builds end-to-end machine learning systems and AI products that solve real business problems — from data pipeline to production deployment.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Start a project →</a>
+    <a href="#services" class="btn-ghost">Explore services</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">50<span>+</span></div>
+      <div class="stat-label">ML models deployed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">98<span>%</span></div>
+      <div class="stat-label">Client satisfaction</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3<span>x</span></div>
+      <div class="stat-label">Avg. ROI delivered</div>
+    </div>
+  </div>
+
+  <!-- floating card -->
+  <div class="hero-card">
+    <div class="hero-card-label">Model performance dashboard</div>
+    <div class="model-row">
+      <div class="model-dot dot-blue"></div>
+      <div class="model-name">Churn Predictor v3</div>
+      <div class="model-bar-wrap"><div class="model-bar bar-blue"></div></div>
+      <div class="model-val">91%</div>
+    </div>
+    <div class="model-row">
+      <div class="model-dot dot-teal"></div>
+      <div class="model-name">Demand Forecaster</div>
+      <div class="model-bar-wrap"><div class="model-bar bar-teal"></div></div>
+      <div class="model-val">76%</div>
+    </div>
+    <div class="model-row">
+      <div class="model-dot dot-coral"></div>
+      <div class="model-name">NLP Classifier</div>
+      <div class="model-bar-wrap"><div class="model-bar bar-coral"></div></div>
+      <div class="model-val">83%</div>
+    </div>
+    <div class="hero-card-footer">
+      <span><span class="pulse-dot"></span>Live monitoring</span>
+      <span>Updated 2m ago</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div class="section-label">What we do</div>
+    <h2>End-to-end AI engineering</h2>
+    <p class="section-sub">From messy raw data to scalable production systems — we cover the full ML lifecycle.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <h3>Data Engineering</h3>
+      <p>Robust ETL pipelines, data lakes, warehouse architecture, and real-time streaming with Kafka and Spark.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🤖</div>
+      <h3>Machine Learning</h3>
+      <p>Custom model development — classification, regression, forecasting, and deep learning for your domain.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🧠</div>
+      <h3>LLM &amp; GenAI</h3>
+      <p>Fine-tuning, RAG pipelines, LLM-powered applications, and enterprise AI assistants tailored to your data.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🚀</div>
+      <h3>MLOps &amp; Deployment</h3>
+      <p>CI/CD for ML, model monitoring, drift detection, containerised APIs with Docker, Kubernetes, and Flask.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📈</div>
+      <h3>BI &amp; Analytics</h3>
+      <p>Interactive dashboards, KPI frameworks, and self-service analytics powered by Tableau and Metabase.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔒</div>
+      <h3>AI Strategy &amp; Audit</h3>
+      <p>Responsible AI assessments, model explainability, bias auditing, and data governance frameworks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-header reveal">
+    <div class="section-label">How we work</div>
+    <h2>From data to production in 5 steps</h2>
+    <p class="section-sub">A structured, collaborative approach that reduces risk and ships faster.</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <h3>Discovery</h3>
+      <p>Deep-dive into your business problem, data landscape, and success metrics with stakeholders.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <h3>Data Preparation</h3>
+      <p>Ingest, clean, transform, and version your data. Feature engineering and exploratory analysis.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <h3>Modelling</h3>
+      <p>Experiment-driven development — iterative training, evaluation, and hyperparameter tuning.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <h3>Deployment</h3>
+      <p>Package models as Flask/FastAPI microservices, containerised and deployed on cloud or on-prem.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">05</div>
+      <h3>Monitoring &amp; Iteration</h3>
+      <p>Continuous model monitoring, performance alerts, retraining pipelines, and roadmap planning.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT STRIP -->
+<section class="about-strip" id="about">
+  <div class="about-content reveal">
+    <div class="section-label label">Who we are</div>
+    <h2>Built by data engineers and ML practitioners</h2>
+    <p class="section-sub">AbruvaTech is a specialist AI consultancy. We don't do fluff — every engagement is led by senior engineers with real production experience.</p>
+    <div class="about-tags">
+      <span class="tag">Remote-first</span>
+      <span class="tag">Python-native</span>
+      <span class="tag">Cloud-agnostic</span>
+      <span class="tag">Research-backed</span>
+      <span class="tag">Open to contracts</span>
+    </div>
+  </div>
+  <div class="about-feature-list reveal">
+    <div class="feat-row">
+      <div class="feat-icon">⚡</div>
+      <div>
+        <h4>Rapid prototyping</h4>
+        <p>Working proof-of-concept in days, not months.</p>
+      </div>
+    </div>
+    <div class="feat-row">
+      <div class="feat-icon">🔬</div>
+      <div>
+        <h4>Experiment rigour</h4>
+        <p>MLflow-tracked experiments, reproducible pipelines.</p>
+      </div>
+    </div>
+    <div class="feat-row">
+      <div class="feat-icon">🌐</div>
+      <div>
+        <h4>Production-grade APIs</h4>
+        <p>Flask / FastAPI endpoints with versioning and auth.</p>
+      </div>
+    </div>
+    <div class="feat-row">
+      <div class="feat-icon">📡</div>
+      <div>
+        <h4>Real-time inference</h4>
+        <p>Sub-100ms latency serving with model caching.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="tech" id="tech">
+  <div class="section-label">Technologies</div>
+  <h2>Our stack</h2>
+  <p class="tech-desc">Battle-tested tools across the full data and AI ecosystem.</p>
+  <div class="tech-grid reveal">
+    <span class="tech-pill">Python</span>
+    <span class="tech-pill">TensorFlow</span>
+    <span class="tech-pill">PyTorch</span>
+    <span class="tech-pill">scikit-learn</span>
+    <span class="tech-pill">Flask</span>
+    <span class="tech-pill">FastAPI</span>
+    <span class="tech-pill">Docker</span>
+    <span class="tech-pill">Kubernetes</span>
+    <span class="tech-pill">MLflow</span>
+    <span class="tech-pill">Apache Spark</span>
+    <span class="tech-pill">Apache Kafka</span>
+    <span class="tech-pill">PostgreSQL</span>
+    <span class="tech-pill">dbt</span>
+    <span class="tech-pill">Airflow</span>
+    <span class="tech-pill">LangChain</span>
+    <span class="tech-pill">HuggingFace</span>
+    <span class="tech-pill">AWS</span>
+    <span class="tech-pill">GCP</span>
+    <span class="tech-pill">Azure ML</span>
+    <span class="tech-pill">Tableau</span>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-wrap">
+    <div class="contact-info reveal">
+      <div class="section-label">Get in touch</div>
+      <h2>Ready to build something?</h2>
+      <p>Tell us about your data challenge. We'll respond within 24 hours with an initial assessment.</p>
+      <div class="contact-details">
+        <div class="contact-item">📧 <span><strong>Email:</strong> hello@abruvatech.ai</span></div>
+        <div class="contact-item">📍 <span><strong>Location:</strong> Global / Remote</span></div>
+        <div class="contact-item">💬 <span><strong>Response time:</strong> &lt; 24 hours</span></div>
+      </div>
+    </div>
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First name</label>
+          <input type="text" id="fname" placeholder="Alex" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last name</label>
+          <input type="text" id="lname" placeholder="Johnson" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Work email</label>
+        <input type="email" id="email" placeholder="alex@company.com" required>
+      </div>
+      <div class="form-group">
+        <label for="service">Service of interest</label>
+        <select id="service">
+          <option value="">Select a service...</option>
+          <option>Machine Learning</option>
+          <option>Data Engineering</option>
+          <option>LLM / GenAI</option>
+          <option>MLOps &amp; Deployment</option>
+          <option>BI &amp; Analytics</option>
+          <option>AI Strategy</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="msg">Tell us about your project</label>
+        <textarea id="msg" placeholder="Describe your data challenge, timeline, and goals..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send message →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">Abruva<span>Tech</span></a>
+  <span>© 2025 AbruvaTech. All rights reserved.</span>
+  <span>Data Science · AI · MLOps</span>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✅ Message sent!';
+    btn.style.background = '#0D8A6F';
+    setTimeout(() => { btn.textContent = 'Send message →'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+</script>
+</body>
+</html>
